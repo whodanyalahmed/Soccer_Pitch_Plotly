@@ -32,19 +32,19 @@
             y.push( row['YM'] );
             y.push( row['xG'] );
           }
-          console.log( 'X',x, 'Y',y, 'SD',standard_deviation,sizeOfB );
-          makePlotly( x, y, standard_deviation,sizeOfB );
+          console.log( 'X',x, 'Y',y, 'SD',standard_deviation);
+          makePlotly( x, y, standard_deviation);
         }
         
-        function makePlotly( x, y, standard_deviation,sizeOfB ){
+        function makePlotly( x, y, standard_deviation ){
           var plotDiv = document.getElementById("tester");
           var traces = [{
             x: x,
             y: y,
             mode: 'markers',
-            marker : {
-                size : (sizeOfB * 100)
-            }
+            // marker : {
+            //     size : (sizeOfB * 100)
+            // }
           }];
         var layout = {
         title: 'Rectangles Positioned Relative to the Plot and to the Axes',
