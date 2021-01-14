@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <title>CSV</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-4"><div id="tester" style="width:1100px;height:600px;margin:0 auto"></div></div>
+            <div class="col-4"></div>
+        </div>
+    </div>
+    <script>
+        function makeplot() {
+          Plotly.d3.csv("data.csv", function(data){ processData(data) } );
+        
+        };
+        
+        function processData(allRows) {
+        
+          console.log(allRows);
+          var x = [], y = [], standard_deviation = [],sizeOfB = [];
+        
+          for (var i=0; i<allRows.length; i++) {
+            row = allRows[i];
+            x.push( row['XM'] );
+            y.push( row['YM'] );
+            y.push( row['xG'] );
+          }
+          console.log( 'X',x, 'Y',y, 'SD',standard_deviation,sizeOfB );
+          makePlotly( x, y, standard_deviation,sizeOfB );
+        }
+        
+        function makePlotly( x, y, standard_deviation,sizeOfB ){
+          var plotDiv = document.getElementById("tester");
+          var traces = [{
+            x: x,
+            y: y,
+            mode: 'markers',
+            marker : {
+                size : (sizeOfB * 100)
+            }
+          }];
+        var layout = {
+        title: 'Rectangles Positioned Relative to the Plot and to the Axes',
+        xaxis: {
+            range: [-1, 105],
+            showgrid: false
+        },
+        yaxis: {
+            range: [-1, 69],
+            showgrid: false
+        },
+        shapes: [
+
+            //Rectangle reference to the axes
+            {
+            type: 'rect',
+            xref: 'x',
+            yref: 'y',
+            x0: 0,
+            x1: 104,
+            y0: 0,
+            y1: 68,
+            layer: 'below',
+            //   line_color="#faf0e6",''
+            line: {
+                color: '#faf0e6',
+                width: 3
+            },
+            fillcolor: '#3E3E40'
+            },
+            // center dot
+            {
+            type:"circle",
+            xref:"x", 
+            yref:"y",
+            fillcolor:"#faf0e6",
+            x0:51.5, 
+            x1:52.5, 
+            y0:33.5, 
+            y1:34.5,
+            fillcolor: '#faf0e6',
+            line: {
+                color: '#faf0e6'
+            },
+            },
+            // Center Circle
+            {
+                type: 'circle',
+            xref: 'x',
+            yref: 'y',
+            x0:(52-9.15), 
+            x1:(52+9.15), 
+            y0:(34-14), 
+            y1:(34+14),
+
+            line: {
+                color: '#faf0e6'
+            }
+            },
+            //Rectangle reference to the Plot
+            // Left side
+            // Left big
+            {
+            type:"rect",
+            xref:"x", yref:"y",
+            x0:0, x1:15, y0:13.84, y1:54.16,
+            
+            layer: 'below',
+            line : {
+            color: "#faf0e4"
+            }
+
+            },
+            // Left Goal
+            {
+            type:"rect",
+            
+            xref:"x", yref:"y",
+            x0:0, x1:-0.2, y0:30.34, y1:37.66,
+            line:{
+                color:"#faf0e6",
+            }
+        },
+        // small rect
+        {
+            type:"rect",
+            xref:"x", yref:"y",
+            x0:0, x1:4.5, y0:24.84, y1:43.16,
+            
+            layer: 'below',
+            line:
+            {
+            color: "#faf0e6"
+            }
+        },
+        // Left dot
+        {
+            type:"circle",
+            xref:"x", yref:"y",
+            fillcolor:"#faf0e6",
+            x0:10.5, x1:11, y0:33.5, y1:34.5,
+            line:
+            {
+            color: "#faf0e6"
+            }
+        },
+        // left arc
+        // {
+        //   type:"path",
+        //   path: ellipse_arc(x_center=-32.5,y_center=33.8,a=50, b=20, start_angle=-Math.PI/10, end_angle=Math.PI/10, N=60),
+        //   line:{
+        //     color:"#faf0e6"
+        //   }
+        // },
+        // right side
+        {
+            type:"rect",
+            xref:"x", yref:"y",
+            x0:104, x1:87.5, y0:54.16, y1:13.84,
+            layer: 'below',
+            line:{
+            color: "#faf0e6"
+            }
+            // line_color: "#faf0e6"
+        },
+        // right goal
+        {
+            type: "rect",
+            xref:"x", yref:"y",
+            x0: 104, x1: 104.2, y0: 30.34, y1: 37.66,
+            line: {
+                color: "#faf0e6"
+            }
+        },
+        // right small
+        {
+            type:"rect",
+            xref:"x", yref:"y",
+            x0:104, x1:99.5,y0:24.84, y1:43.16,
+            layer: 'below',
+            line:
+            {
+            color: "#faf0e6"
+            }
+        },
+        // right dot
+        {
+            type:"circle",
+            xref:"x", yref:"y",
+            fillcolor:"#faf0e6",
+            x0:92.5, x1:93, y0:33.5, y1:34.5,
+            line: { 
+            color: "#faf0e6"
+            }
+        }
+
+
+        ]
+        };
+          Plotly.newPlot('tester', traces,layout,
+            {title: 'Plotting CSV data from AJAX call'});
+        };
+          makeplot();
+        </script>
+</body>
+</html>
+
