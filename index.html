@@ -37,7 +37,7 @@
     <div class="container ">
         <div class="row pt-3 pb-3">
             <div class="col-2"></div>
-            <div class="col-8"><div id="tester" style="width:1700x;height:425px;margin:0 auto"></div></div>
+            <div class="col-8"><div id="tester" style="width:1700x;height:440px;margin:0 auto"></div></div>
             <div class="col-2"></div>
         </div>
     </div>
@@ -58,12 +58,12 @@
         
           for (var i=0; i<allRows.length; i++) {
             row = allRows[i];
-            id.push( row['id'] );
             x.push( row['XM'] );
             y.push( row['YM'] );
             result.push( row['result'] );
             lastAct.push( row['lastAction'] );
             sizeOfB.push( row['xG'] *100);
+            id.push( row['id'] );
           }
         //   console.log( 'X',x, 'Y',y, 'SD',standard_deviation,'Size',sizeOfB);
           makePlotly( x, y, standard_deviation,sizeOfB,result,lastAct,id);
@@ -76,13 +76,26 @@
             y: y,
             type: 'scatter',
             // showlegend: false,
+            
             mode: 'markers',
-            transforms: [{ type: "groupby", groups: result }],
-            hovertemplate: '<b>Result</b>: %{result}' +
-                        '<br><b>Last Action</b>: %{lastAct}<br>',
-            text : id,
+            opacity:0.7,
+            
+        custom_data:[result, lastAct],
+            transforms: [{ 
+                type: "groupby", 
+                groups: result,
+                styles: [
+                {target: 'Goal', value: {marker: {color: 'Green'}}},
+                {target: 'MissedShots', value: {marker: {color: 'purple'}}},
+                {target: 'BlockedShot', value: {marker: {color: 'red'}}},
+                {target: 'SavedShot', value: {marker: {color: 'blue'}}},
+                {target: 'ShotOnPost', value: {marker: {color: 'yellow'}}},
+    ]
+             }],
+             text : lastAct,
+            hovertemplate: "<b>Last Action</b>: %{text}"  ,
             marker : {
-                color_discrete_sequence:["green", "purple", "red", "blue","yellow"],
+                // color_discrete_sequence:["green", "purple", "red", "blue","yellow"],
                 size : sizeOfB,
                 line: {
                     width: 0
@@ -94,14 +107,17 @@
           var config = {responsive: true}
 
         var layout = {
+        legend: {orientation: 'h', y: -0.3},
         title: 'Rectangles Positioned Relative to the Plot and to the Axes',
         xaxis: {
             range: [-1, 105],
-            showgrid: false
+            showgrid: false,
+            zeroline: false
         },
         yaxis: {
             range: [-1, 69],
-            showgrid: false
+            showgrid: false,
+            zeroline: false
         },
         shapes: [
 
